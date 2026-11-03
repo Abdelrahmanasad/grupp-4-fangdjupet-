@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HeroTest {
 
@@ -47,6 +48,22 @@ public class HeroTest {
     void heroIsAliveWithOneHealth() {
         Hero hero = new Hero("Knight", 1, 100);
         assertTrue(hero.isAlive());
+    }
+
+    @Test
+    void heroCannotTakeNegativeDamage() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.takeDamage(-10));
+    }
+
+    @Test
+    void heroCannotHealNegativeAmount() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.heal(-10));
     }
 
 
