@@ -9,16 +9,16 @@ class GameEventTest {
 
     @Test
     void createsEventWithTypeAndMessage() {
-        GameEvent event = new GameEvent(EventType.ENEMY_DEFEATED, "Hjälten besegrade Trollet");
+        GameEvent event = new GameEvent(EventType.ENEMY_DEFEATED, "The hero defeated the Troll");
 
         assertEquals(EventType.ENEMY_DEFEATED, event.type());
-        assertEquals("Hjälten besegrade Trollet", event.message());
+        assertEquals("The hero defeated the Troll", event.message());
     }
 
     @Test
     void nullTypeThrowsException() {
         assertThrows(NullPointerException.class,
-                () -> new GameEvent(null, "Något hände"));
+                () -> new GameEvent(null, "Something happened"));
     }
 
     @Test
