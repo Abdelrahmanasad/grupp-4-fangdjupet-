@@ -3,7 +3,7 @@ package se.fangdjupet.items;
 public class Weapon extends Item {
     private double damage;
 
-    public Weapon(String name, double level, int damage) {
+    public Weapon(String name, double level, double damage) {
         super(name, level);
         this.damage = damage;
     }
