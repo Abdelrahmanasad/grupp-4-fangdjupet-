@@ -1,30 +1,31 @@
 package se.fangdjupet.core;
 
 /**
- * Alla typer av händelser som kan inträffa i spelet.
- * Används av GameEvent, så att lyssnare kan reagera olika
- * beroende på vad som hänt t.ex bara logga strider.
+ * Every type of event that can happen in the game.
+ * <p>
+ * Used by {@link GameEvent} so that listeners can react differently
+ * depending on what happened (e.g. only log battle events).
  */
 public enum EventType {
 
-    // Spelets livscykel
+    // Game lifecycle
     GAME_STARTED,
     GAME_SAVED,
     GAME_LOADED,
     GAME_OVER,
     VICTORY,
 
-    // Värld och rum
+    // World and rooms
     ROOM_ENTERED,
 
-    // Strid
+    // Combat
     BATTLE_STARTED,
     ATTACK_PERFORMED,
     ENEMY_DEFEATED,
     HERO_DEFEATED,
     HERO_HEALED,
 
-    // Föremål
+    // Items
     ITEM_FOUND,
     ITEM_USED,
     ITEM_EQUIPPED
