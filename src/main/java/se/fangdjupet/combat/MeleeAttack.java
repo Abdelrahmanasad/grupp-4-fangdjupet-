@@ -13,10 +13,6 @@ public class MeleeAttack implements AttackStrategy {
      */
     @Override
     public double calculateDamage(double baseDamage) {
-        if (baseDamage < 0) {
-            throw new IllegalArgumentException("Damage cannot be negative");
-        }
-
-        return baseDamage;
+        return DamageCalculator.calculateDamage(baseDamage);
     }
 }
