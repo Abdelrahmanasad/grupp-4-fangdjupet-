@@ -42,4 +42,9 @@ public class Inventory {
     public int getMaxCapacity() {
         return maxCapacity;
     }
+
+    public boolean removeItem(Item item) {
+        Objects.requireNonNull(item, "Item to remove cannot be null");
+        return items.remove(item);
+    }
 }

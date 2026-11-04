@@ -49,6 +49,34 @@ class InventoryTest {
     }
 
     @Test
+    @DisplayName("Should successfully remove an existing item from inventory")
+    void testRemoveExistingItem() {
+        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        inventory.addItem(sword);
+
+        boolean removed = inventory.removeItem(sword);
+
+        assertTrue(removed, "removeItem should return true when item was present");
+        assertEquals(0, inventory.getItems().size(), "Inventory size should be 0 after removal");
+    }
+
+    @Test
+    @DisplayName("Should return false when attempting to remove an item not in inventory")
+    void testRemoveNonExistentItem() {
+        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+
+        boolean removed = inventory.removeItem(sword);
+
+        assertFalse(removed, "removeItem should return false when item was not in inventory");
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when removing null item")
+    void testRemoveNullItem() {
+        assertThrows(NullPointerException.class, () -> inventory.removeItem(null));
+    }
+
+    @Test
     @DisplayName("Should filter items by type using getItemsOfType()")
     void testGetItemsOfType() {
         inventory.addItem(ItemFactory.createItem(ItemType.WEAPON, "Sword 1", 1, 10.0));
@@ -74,6 +102,30 @@ class InventoryTest {
     }
 
     @Test
+    @DisplayName("Should decrease potion quantity on use and remove from inventory when stack becomes empty")
+    void testPotionQuantityOnUse() {
+        Potion potion = new Potion("Health Potion", 1, 20.0, 2);
+        inventory.addItem(potion);
+
+        // Första användningen: 1 kvar i stacken -> finns kvar i inventory
+        assertTrue(potion.use(inventory), "Should return true because 1 potion remains");
+        assertEquals(1, potion.getQuantity());
+        assertEquals(1, inventory.getItems().size());
+
+        // Andra användningen: 0 kvar -> returnerar false och plockas bort ur inventory automatiskt
+        assertFalse(potion.use(inventory), "Should return false because 0 potions remain");
+        assertEquals(0, potion.getQuantity());
+        assertEquals(0, inventory.getItems().size(), "Potion should be automatically removed from inventory");
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when calling use() with null inventory")
+    void testPotionUseNullInventory() {
+        Potion potion = new Potion("Health Potion", 1, 20.0, 1);
+        assertThrows(NullPointerException.class, () -> potion.use(null));
+    }
+
+    @Test
     @DisplayName("Item constructor should validate invalid arguments")
     void testItemValidation() {
         // Name validation
@@ -89,5 +141,9 @@ class InventoryTest {
         assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, -10.0));
         assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, -5.0));
         assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, -50.0));
+
+        // Potion quantity validation
+        assertThrows(IllegalArgumentException.class, () -> new Potion("Health Potion", 1, 20.0, 0));
+        assertThrows(IllegalArgumentException.class, () -> new Potion("Health Potion", 1, 20.0, -1));
     }
 }
