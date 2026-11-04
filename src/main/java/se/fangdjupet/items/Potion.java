@@ -16,6 +16,11 @@ public class Potion extends Item {
     }
 
     @Override
+    public ItemType getType() {
+        return ItemType.POTION;
+    }
+
+    @Override
     public String getDescription() {
         return "Potion: " + getName() + " (Level " + getLevel() + ") - Health: +" + healthBonus;
     }

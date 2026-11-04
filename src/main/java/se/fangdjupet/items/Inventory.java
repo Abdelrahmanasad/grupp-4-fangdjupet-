@@ -1,41 +1,45 @@
 package se.fangdjupet.items;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Inventory {
-    private List<Item> items;
-    private int maxCapacity;
+    private final int maxCapacity;
+    private final List<Item> items;
 
     public Inventory(int maxCapacity) {
+        if (maxCapacity <= 0) {
+            throw new IllegalArgumentException("Max capacity must be greater than 0");
+        }
         this.maxCapacity = maxCapacity;
         this.items = new ArrayList<>();
     }
 
     public boolean addItem(Item item) {
-        if (items.size() < maxCapacity) {
-            items.add(item);
-            return true;
+        Objects.requireNonNull(item, "Item to add cannot be null");
+        if (items.size() >= maxCapacity) {
+            return false;
         }
-        return false;
-    }
-
-    public boolean removeItem(Item item) {
-        return items.remove(item);
+        return items.add(item);
     }
 
     public List<Item> getItems() {
-        return List.copyOf(items);
+        return Collections.unmodifiableList(items);
+    }
+
+    public <T extends Item> List<T> getItemsOfType(Class<T> type) {
+        List<T> filteredList = new ArrayList<>();
+        for (Item item : items) {
+            if (type.isInstance(item)) {
+                filteredList.add(type.cast(item));
+            }
+        }
+        return filteredList;
     }
 
     public int getMaxCapacity() {
         return maxCapacity;
-    }
-
-    public <T extends Item> List<T> getItemsOfType(Class<T> itemType) {
-        return items.stream()
-                .filter(itemType::isInstance)
-                .map(itemType::cast)
-                .toList();
     }
 }

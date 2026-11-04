@@ -11,8 +11,8 @@ public abstract class Item {
         if (name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be blank");
         }
-        if (level < 1) {
-            throw new IllegalArgumentException("Level must be at least 1");
+        if (level < 1 || level > 3) {
+            throw new IllegalArgumentException("Level must be between 1 and 3");
         }
 
         this.name = name;
@@ -27,6 +27,7 @@ public abstract class Item {
         return level;
     }
 
-    public abstract String getDescription();
+    public abstract ItemType getType();
 
+    public abstract String getDescription();
 }

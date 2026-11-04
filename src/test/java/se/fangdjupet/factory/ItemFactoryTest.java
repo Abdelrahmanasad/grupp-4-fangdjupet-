@@ -1,43 +1,52 @@
 package se.fangdjupet.factory;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import se.fangdjupet.items.Item;
-import se.fangdjupet.items.Weapon;
-import se.fangdjupet.items.Potion;
+import se.fangdjupet.items.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemFactoryTest {
 
     @Test
-    void createItemShouldReturnWeaponWithCorrectValues() {
-        Item item = ItemFactory.createItem("weapon", "Iron Sword", 1.0, 15.0);
+    @DisplayName("Should create Weapon correctly via ItemFactory")
+    void createWeaponTest() {
+        Item item = ItemFactory.createItem(ItemType.WEAPON, "Iron Sword", 1, 15.0);
 
-        // Verifiera att objektet faktiskt är ett Weapon
         assertInstanceOf(Weapon.class, item);
         assertEquals("Iron Sword", item.getName());
-        assertEquals(1.0, item.getLevel());
-
+        assertEquals(1, item.getLevel());
+        assertEquals(ItemType.WEAPON, item.getType());
 
         Weapon weapon = (Weapon) item;
         assertEquals(15.0, weapon.getDamage());
     }
 
     @Test
-    void createItemShouldReturnPotionWithCorrectValues() {
-        Item item = ItemFactory.createItem("potion", "Health Potion", 1.0, 50.0);
+    @DisplayName("Should create Armor correctly via ItemFactory")
+    void createArmorTest() {
+        Item item = ItemFactory.createItem(ItemType.ARMOR, "Iron Shield", 2, 10.0);
 
-        assertInstanceOf(Potion.class, item);
-        assertEquals("Health Potion", item.getName());
+        assertInstanceOf(Armor.class, item);
+        assertEquals("Iron Shield", item.getName());
+        assertEquals(2, item.getLevel());
+        assertEquals(ItemType.ARMOR, item.getType());
 
-        Potion potion = (Potion) item;
-        assertEquals(50.0, potion.getHealthBonus());
+        Armor armor = (Armor) item;
+        assertEquals(10.0, armor.getDefenceBonus());
     }
 
     @Test
-    void createItemWithInvalidTypeShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            ItemFactory.createItem("banana", "Unknown", 1.0, 0.0);
-        });
+    @DisplayName("Should create Potion correctly via ItemFactory")
+    void createPotionTest() {
+        Item item = ItemFactory.createItem(ItemType.POTION, "Health Potion", 3, 50.0);
+
+        assertInstanceOf(Potion.class, item);
+        assertEquals("Health Potion", item.getName());
+        assertEquals(3, item.getLevel());
+        assertEquals(ItemType.POTION, item.getType());
+
+        Potion potion = (Potion) item;
+        assertEquals(50.0, potion.getHealthBonus());
     }
 }

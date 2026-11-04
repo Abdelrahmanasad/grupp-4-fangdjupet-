@@ -16,6 +16,11 @@ public class Armor extends Item {
     }
 
     @Override
+    public ItemType getType() {
+        return ItemType.ARMOR;
+    }
+
+    @Override
     public String getDescription() {
         return "Armor: " + getName() + " (Level " + getLevel() + ") - Defence: +" + defenceBonus;
     }

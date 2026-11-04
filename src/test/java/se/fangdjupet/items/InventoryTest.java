@@ -1,5 +1,7 @@
 package se.fangdjupet.items;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import se.fangdjupet.factory.ItemFactory;
 
@@ -9,61 +11,83 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
 
-    @Test
-    void addItemShouldReturnFalseWhenInventoryIsFull() {
-        Inventory inv = new Inventory(2);
-        Item w1 = ItemFactory.createItem("weapon", "Sword", 1.0, 10.0);
-        Item w2 = ItemFactory.createItem("weapon", "Axe", 1.0, 15.0);
-        Item p1 = ItemFactory.createItem("potion", "Healthpotion", 1.0, 20.0);
+    private Inventory inventory;
 
-        assertTrue(inv.addItem(w1));
-        assertTrue(inv.addItem(w2));
-        assertFalse(inv.addItem(p1)); // Väskan är full (max 2)
-        assertEquals(2, inv.getItems().size());
+    @BeforeEach
+    void setUp() {
+        inventory = new Inventory(3);
     }
 
     @Test
-    void getItemsOfTypeShouldReturnOnlySpecifiedType() {
-        Inventory inv = new Inventory(5);
-        inv.addItem(ItemFactory.createItem("weapon", "Sword", 1.0, 10.0));
-        inv.addItem(ItemFactory.createItem("armor", "Shield", 1.0, 5.0));
-        inv.addItem(ItemFactory.createItem("potion", "Potion", 1.0, 15.0));
-
-        List<Weapon> weapons = inv.getItemsOfType(Weapon.class);
-
-        assertEquals(1, weapons.size());
-        assertEquals("Sword", weapons.get(0).getName());
+    @DisplayName("Should validate Inventory max capacity on creation")
+    void testInventoryConstructorValidation() {
+        assertThrows(IllegalArgumentException.class, () -> new Inventory(0));
+        assertThrows(IllegalArgumentException.class, () -> new Inventory(-5));
     }
 
     @Test
-    void createItemWithInvalidTypeShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            ItemFactory.createItem("banana", "Unknown", 1.0, 0.0);
+    @DisplayName("Should add items and enforce max capacity")
+    void testAddItemAndCapacity() {
+        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        Item shield = ItemFactory.createItem(ItemType.ARMOR, "Shield", 1, 5.0);
+        Item potion = ItemFactory.createItem(ItemType.POTION, "Potion", 1, 15.0);
+        Item extraPotion = ItemFactory.createItem(ItemType.POTION, "Extra Potion", 1, 15.0);
+
+        assertTrue(inventory.addItem(sword));
+        assertTrue(inventory.addItem(shield));
+        assertTrue(inventory.addItem(potion));
+
+        // Capacity is 3, fourth item should fail
+        assertFalse(inventory.addItem(extraPotion));
+        assertEquals(3, inventory.getItems().size());
+    }
+
+    @Test
+    @DisplayName("Should throw NullPointerException when adding null item")
+    void testAddNullItem() {
+        assertThrows(NullPointerException.class, () -> inventory.addItem(null));
+    }
+
+    @Test
+    @DisplayName("Should filter items by type using getItemsOfType()")
+    void testGetItemsOfType() {
+        inventory.addItem(ItemFactory.createItem(ItemType.WEAPON, "Sword 1", 1, 10.0));
+        inventory.addItem(ItemFactory.createItem(ItemType.WEAPON, "Sword 2", 2, 20.0));
+        inventory.addItem(ItemFactory.createItem(ItemType.ARMOR, "Shield", 1, 5.0));
+
+        List<Weapon> weapons = inventory.getItemsOfType(Weapon.class);
+        List<Armor> armors = inventory.getItemsOfType(Armor.class);
+
+        assertEquals(2, weapons.size());
+        assertEquals(1, armors.size());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when attempting to modify unmodifiable list")
+    void testUnmodifiableList() {
+        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        inventory.addItem(sword);
+
+        assertThrows(UnsupportedOperationException.class, () -> {
+            inventory.getItems().add(ItemFactory.createItem(ItemType.ARMOR, "Fake Shield", 1, 5.0));
         });
     }
 
     @Test
-    void addItemShouldSuccessfullyAddItemToInventory() {
-        Inventory inv = new Inventory(3);
-        Item sword = ItemFactory.createItem("weapon", "Sword", 1.0, 10.0);
+    @DisplayName("Item constructor should validate invalid arguments")
+    void testItemValidation() {
+        // Name validation
+        assertThrows(NullPointerException.class, () -> new Weapon(null, 1, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("", 1, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("   ", 1, 10.0));
 
-        boolean added = inv.addItem(sword);
+        // Level validation (level < 1 or level > 3)
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 0, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 4, 10.0));
 
-        assertTrue(added);
-        assertEquals(1, inv.getItems().size());
-        assertTrue(inv.getItems().contains(sword));
-    }
-
-    @Test
-    void removeItemShouldRemoveExistingItemAndReturnTrue() {
-        Inventory inv = new Inventory(3);
-        Item sword = ItemFactory.createItem("weapon", "Sword", 1.0, 10.0);
-        inv.addItem(sword);
-
-        boolean removed = inv.removeItem(sword);
-
-        assertTrue(removed);
-        assertEquals(0, inv.getItems().size());
-        assertFalse(inv.getItems().contains(sword));
+        // Negative stat values validation
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, -10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, -5.0));
+        assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, -50.0));
     }
 }
