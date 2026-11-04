@@ -20,6 +20,13 @@ public interface Combatant {
     double getHealth();
 
     /**
+     * Hämtar karaktärens maximala hälsa.
+     *
+     * @return maximal hälsa
+     */
+    double maxHealth();
+
+    /**
      * Minskar karaktärens hälsa med angiven skada.
      *
      * @param amount hur mycket skada karaktären tar

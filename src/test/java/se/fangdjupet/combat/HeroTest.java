@@ -66,6 +66,13 @@ public class HeroTest {
                 () -> hero.heal(-10));
     }
 
+    @Test
+    void heroReturnsMaxHealth() {
+        Hero hero = new Hero("Johan", 75, 100);
+
+        assertEquals(100, hero.maxHealth());
+    }
+
 
 
 

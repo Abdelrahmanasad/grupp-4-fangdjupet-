@@ -52,6 +52,16 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
+     * Hämtar karaktärens maximala hälsa.
+     *
+     * @return maximal hälsa
+     */
+    @Override
+    public double maxHealth() {
+        return maxHealth;
+    }
+
+    /**
      * Minskar hälsan utan att gå under noll.
      *
      * @param amount hur mycket skada karaktären tar
