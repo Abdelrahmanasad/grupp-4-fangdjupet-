@@ -1,18 +1,18 @@
 package se.fangdjupet.factory;
 
-import se.fangdjupet.items.Armor;
-import se.fangdjupet.items.Item;
-import se.fangdjupet.items.Potion;
-import se.fangdjupet.items.Weapon;
+import se.fangdjupet.items.*;
 
 public class ItemFactory {
 
-    public static Item createItem(String type, String name, double level, double value) {
-        return switch (type.toLowerCase()) {
-            case "weapon" -> new Weapon(name, level, value);
-            case "armor" -> new Armor(name, level, value);
-            case "potion" -> new Potion(name, level, value);
-            default -> throw new IllegalArgumentException("Okänd föremålstyp: " + type);
-        };
+    public static Item createItem(ItemType type, String name, int level, double value) {
+        switch (type) {
+            case WEAPON:
+                return new Weapon(name, level, value);
+            case ARMOR:
+                return new Armor(name, level, value);
+            case POTION:
+                return new Potion(name, level, value);
+        }
+        throw new IllegalArgumentException("Unknown ItemType: " + type);
     }
 }

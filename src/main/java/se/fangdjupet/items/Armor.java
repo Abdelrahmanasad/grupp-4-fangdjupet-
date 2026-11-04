@@ -1,14 +1,17 @@
 package se.fangdjupet.items;
 
-public class Armor extends Item{
-    private double defenceBonus;
+public class Armor extends Item {
+    private final double defenceBonus;
 
-    public Armor(String name, double level, double DefenceBonus){
+    public Armor(String name, int level, double defenceBonus) {
         super(name, level);
-        this.defenceBonus = DefenceBonus;
+        if (defenceBonus < 0) {
+            throw new IllegalArgumentException("Defence bonus cannot be negative");
+        }
+        this.defenceBonus = defenceBonus;
     }
 
-    public double getDefenceBonus(){
+    public double getDefenceBonus() {
         return defenceBonus;
     }
 

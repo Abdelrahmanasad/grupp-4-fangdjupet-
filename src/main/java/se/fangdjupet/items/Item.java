@@ -1,10 +1,20 @@
 package se.fangdjupet.items;
 
-public abstract class Item {
-    private String name;
-    private double level;
+import java.util.Objects;
 
-    public Item(String name, double level) {
+public abstract class Item {
+    private final String name;
+    private final int level;
+
+    public Item(String name, int level) {
+        Objects.requireNonNull(name, "Name cannot be null");
+        if (name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+        if (level < 1) {
+            throw new IllegalArgumentException("Level must be at least 1");
+        }
+
         this.name = name;
         this.level = level;
     }
@@ -13,7 +23,7 @@ public abstract class Item {
         return name;
     }
 
-    public double getLevel() {
+    public int getLevel() {
         return level;
     }
 
