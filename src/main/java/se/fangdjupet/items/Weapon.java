@@ -16,6 +16,11 @@ public class Weapon extends Item {
     }
 
     @Override
+    public ItemType getType() {
+        return ItemType.WEAPON;
+    }
+
+    @Override
     public String getDescription() {
         return "Weapon: " + getName() + " (Level " + getLevel() + ") - Damage: +" + damage;
     }
