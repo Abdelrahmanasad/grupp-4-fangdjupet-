@@ -1,10 +1,13 @@
 package se.fangdjupet.items;
 
 public class Weapon extends Item {
-    private double damage;
+    private final double damage;
 
-    public Weapon(String name, double level, double damage) {
+    public Weapon(String name, int level, double damage) {
         super(name, level);
+        if (damage < 0) {
+            throw new IllegalArgumentException("Damage cannot be negative");
+        }
         this.damage = damage;
     }
 
