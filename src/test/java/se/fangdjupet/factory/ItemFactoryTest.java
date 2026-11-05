@@ -19,7 +19,6 @@ class ItemFactoryTest {
         assertEquals(ItemType.WEAPON, item.getType());
 
         Weapon weapon = (Weapon) item;
-        // SWORD baseDamage (18.0) + bonusDamage (15.0) = 33.0
         assertEquals(33.0, weapon.getTotalDamage());
     }
 
@@ -83,5 +82,64 @@ class ItemFactoryTest {
         assertEquals("Big Health Potion", potion.getName());
         assertEquals(50.0, potion.getHealthBonus());
         assertEquals(3, potion.getQuantity());
+    }
+
+    @Test
+    @DisplayName("Should create overloaded weapon, armor, and potion with defaults")
+    void createOverloadedDefaultsTest() {
+        Weapon weapon = ItemFactory.createWeapon("Basic Sword", 1, WeaponType.SWORD);
+        Armor armor = ItemFactory.createArmor("Basic Helmet", 1, ArmorSlot.HELMET);
+        Potion potion = ItemFactory.createPotion("Small Health Potion", 1, 20.0);
+
+        assertEquals(0.0, weapon.getBonusDamage());
+        assertEquals(0.0, armor.getDefenceBonus());
+        assertEquals(1, potion.getQuantity());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when item name is null or blank")
+    void testInvalidNameValidation() {
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createWeapon(null, 1, WeaponType.SWORD, 0.0)
+        );
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createWeapon("   ", 1, WeaponType.SWORD, 0.0)
+        );
+    }
+
+    @Test
+    @DisplayName("Should throw exception when item level is less than 1")
+    void testInvalidLevelValidation() {
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createArmor("Chestplate", 0, ArmorSlot.CHESTPLATE, 5.0)
+        );
+    }
+
+    @Test
+    @DisplayName("Should throw exception when enum parameters are null")
+    void testNullEnumValidation() {
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createItem(null, "Sword", 1, 10.0)
+        );
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createWeapon("Sword", 1, null, 0.0)
+        );
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createArmor("Shield", 1, null, 0.0)
+        );
+    }
+
+    @Test
+    @DisplayName("Should throw exception for invalid numeric parameters")
+    void testInvalidNumericValues() {
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createWeapon("Sword", 1, WeaponType.SWORD, -5.0)
+        );
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createPotion("Potion", 1, -10.0, 1)
+        );
+        assertThrows(IllegalArgumentException.class, () ->
+                ItemFactory.createPotion("Potion", 1, 20.0, 0)
+        );
     }
 }
