@@ -19,11 +19,16 @@ public abstract class AbstractCombatant implements Combatant {
      */
     protected AbstractCombatant(String name, double health, double maxHealth) {
         if (maxHealth <= 0) {
-            throw new IllegalArgumentException("Max health must be greater than 0");
+            throw new IllegalArgumentException(
+                    "Max health must be greater than 0");
         }
 
         if (health < 0 || health > maxHealth) {
             throw new IllegalArgumentException("Invalid health");
+        }
+
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or blank");
         }
 
         this.name = name;
@@ -57,7 +62,7 @@ public abstract class AbstractCombatant implements Combatant {
      * @return maximum health
      */
     @Override
-    public double maxHealth() {
+    public double getMaxHealth() {
         return maxHealth;
     }
 

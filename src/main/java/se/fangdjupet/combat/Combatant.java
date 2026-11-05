@@ -24,7 +24,7 @@ public interface Combatant {
      *
      * @return maximum health
      */
-    double maxHealth();
+    double getMaxHealth();
 
     /**
      * Reduces the character's health by the given damage.

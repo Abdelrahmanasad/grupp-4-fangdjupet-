@@ -84,11 +84,14 @@ public class Battle {
         ensureBattleActive();
 
         if (strategy == null) {
-            throw new IllegalArgumentException("Attack strategy cannot be null");
+            throw new IllegalArgumentException(
+                    "Attack strategy cannot be null");
         }
 
         double attackDamage = strategy.calculateDamage(baseDamage);
-        double damage = DamageCalculator.calculateDamage(attackDamage, defenceBonus);
+
+        double defence = strategy.ignoresDefence() ? 0 : defenceBonus;
+        double damage = DamageCalculator.calculateDamage(attackDamage, defence);
 
         target.takeDamage(damage);
 

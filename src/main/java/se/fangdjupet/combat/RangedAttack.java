@@ -6,6 +6,11 @@ package se.fangdjupet.combat;
 public class RangedAttack implements AttackStrategy {
 
     /**
+     * Multiplier for ranged attack damage.
+     */
+    private static final double DAMAGE_MULTIPLIER = 1.2;
+
+    /**
      * Calculates the damage for a ranged attack.
      *
      * @param baseDamage the base damage of the attack
@@ -13,6 +18,6 @@ public class RangedAttack implements AttackStrategy {
      */
     @Override
     public double calculateDamage(double baseDamage) {
-        return DamageCalculator.calculateDamage(baseDamage);
+        return DamageCalculator.calculateDamage(baseDamage * DAMAGE_MULTIPLIER);
     }
 }

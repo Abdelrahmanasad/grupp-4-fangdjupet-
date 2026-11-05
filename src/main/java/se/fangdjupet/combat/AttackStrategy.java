@@ -12,4 +12,13 @@ public interface AttackStrategy {
      * @return the calculated damage
      */
     double calculateDamage(double baseDamage);
+
+    /**
+     * Checks if the attack ignores defence.
+     *
+     * @return true if defence is ignored, otherwise false
+     */
+    default boolean ignoresDefence() {
+        return false;
+    }
 }

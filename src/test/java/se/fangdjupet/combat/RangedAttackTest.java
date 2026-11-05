@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class RangedAttackTest {
 
     @Test
-    void rangedAttackReturnsBaseDamage() {
+    void rangedAttackReturnsIncreasedDamage() {
         RangedAttack attack = new RangedAttack();
 
         double damage = attack.calculateDamage(15.0);
 
-        assertEquals(15.0, damage);
+        assertEquals(18.0, damage);
     }
 
     @Test

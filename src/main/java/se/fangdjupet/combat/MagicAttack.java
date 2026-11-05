@@ -15,4 +15,14 @@ public class MagicAttack implements AttackStrategy {
     public double calculateDamage(double baseDamage) {
         return DamageCalculator.calculateDamage(baseDamage);
     }
+
+    /**
+     * Checks if magic attacks ignore defence.
+     *
+     * @return true because magic ignores defence
+     */
+    @Override
+    public boolean ignoresDefence() {
+        return true;
+    }
 }

@@ -3,6 +3,7 @@ package se.fangdjupet.combat;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for MagicAttack.
@@ -24,5 +25,12 @@ public class MagicAttackTest {
 
         assertThrows(IllegalArgumentException.class,
                 () -> attack.calculateDamage(-10));
+    }
+
+    @Test
+    void magicAttackIgnoresDefence() {
+        MagicAttack attack = new MagicAttack();
+
+        assertTrue(attack.ignoresDefence());
     }
 }

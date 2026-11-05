@@ -182,4 +182,30 @@ class BattleTest {
         assertEquals(EventType.ATTACK_PERFORMED, events.get(0).type());
         assertEquals(EventType.HERO_DEFEATED, events.get(1).type());
     }
+
+    @Test
+    void magicAttackIgnoresDefence() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+
+        battle.enemyAttack(new MagicAttack(), 30, 10);
+
+        assertEquals(70, hero.getHealth());
+    }
+
+    @Test
+    void meleeAttackIsReducedByDefence() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+
+        battle.enemyAttack(new MeleeAttack(), 30, 10);
+
+        assertEquals(80, hero.getHealth());
+    }
 }
