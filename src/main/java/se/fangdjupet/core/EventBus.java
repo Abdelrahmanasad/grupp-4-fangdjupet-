@@ -6,8 +6,9 @@ import java.util.Objects;
 
 /**
  * Central "notice board" for events (the Subject in the Observer pattern).
- * Whoever creates an event (Battle) does not need to know who is
- * listening. It just calls GameEvent and the EventBus
+ * <p>
+ * Whoever creates an event for example Battle, does not need to know who is
+ * listening. It just calls {@link #publish(GameEvent)} and the EventBus
  * forwards the event to every registered listener.
  */
 public class EventBus {
@@ -17,6 +18,9 @@ public class EventBus {
     /**
      * Registers a listener that will receive all future events.
      * The same listener is only registered once.
+     *
+     * @param listener the listener to add
+     * @throws NullPointerException if listener is null
      */
     public void subscribe(GameEventListener listener) {
         Objects.requireNonNull(listener, "Listener cannot be null");
@@ -26,14 +30,21 @@ public class EventBus {
         }
     }
 
-    //Removes a listener so that it no longer receives events.
+    /**
+     * Removes a listener so that it no longer receives events.
+     *
+     * @param listener the listener to remove
+     */
     public void unsubscribe(GameEventListener listener) {
         listeners.remove(listener);
     }
 
     /**
      * Sends an event to every registered listener, in the order
-     * they were registered. throws NullPointerException if event is null.
+     * they were registered.
+     *
+     * @param event the event to send
+     * @throws NullPointerException if event is null
      */
     public void publish(GameEvent event) {
         Objects.requireNonNull(event, "Event cannot be null");
@@ -45,14 +56,20 @@ public class EventBus {
         }
     }
 
-
-    //Convenience shortcut - creates and publishes an event in one step.
+    /**
+     * Convenience shortcut: creates and publishes an event in one step.
+     * <p>
+     * Example: {@code bus.publish(EventType.ENEMY_DEFEATED, "The hero defeated the Troll");}
+     *
+     * @param type    type of event
+     * @param message text describing the event
+     */
     public void publish(EventType type, String message) {
         publish(new GameEvent(type, message));
     }
 
     /**
-     * @return number of registered listeners (obviuously just for tests)
+     * @return number of registered listeners (mainly used in tests)
      */
     public int listenerCount() {
         return listeners.size();
