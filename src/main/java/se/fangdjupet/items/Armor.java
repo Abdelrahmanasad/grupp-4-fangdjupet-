@@ -1,18 +1,34 @@
 package se.fangdjupet.items;
 
+import java.util.Objects;
+
 public class Armor extends Item {
+    private final ArmorSlot armorSlot;
     private final double defenceBonus;
 
-    public Armor(String name, int level, double defenceBonus) {
+    public Armor(String name, int level, ArmorSlot armorSlot, double defenceBonus) {
         super(name, level);
+        this.armorSlot = Objects.requireNonNull(armorSlot, "ArmorSlot cannot be null");
         if (defenceBonus < 0) {
             throw new IllegalArgumentException("Defence bonus cannot be negative");
         }
         this.defenceBonus = defenceBonus;
     }
 
+    public Armor(String name, int level, ArmorSlot armorSlot) {
+        this(name, level, armorSlot, 0.0);
+    }
+
+    public ArmorSlot getArmorSlot() {
+        return armorSlot;
+    }
+
     public double getDefenceBonus() {
         return defenceBonus;
+    }
+
+    public double getTotalDefence() {
+        return armorSlot.getBaseDefense() + defenceBonus;
     }
 
     @Override
@@ -22,6 +38,6 @@ public class Armor extends Item {
 
     @Override
     public String getDescription() {
-        return "Armor: " + getName() + " (Level " + getLevel() + ") - Defence: +" + defenceBonus;
+        return "Armor (" + armorSlot.name() + "): " + getName() + " (Level " + getLevel() + ") - Defence: +" + getTotalDefence();
     }
 }

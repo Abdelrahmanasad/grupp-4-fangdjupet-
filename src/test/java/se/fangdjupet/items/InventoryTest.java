@@ -129,17 +129,17 @@ class InventoryTest {
     @DisplayName("Item constructor should validate invalid arguments")
     void testItemValidation() {
         // Name validation
-        assertThrows(NullPointerException.class, () -> new Weapon(null, 1, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("", 1, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("   ", 1, 10.0));
+        assertThrows(NullPointerException.class, () -> new Weapon(null, 1, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("", 1, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("   ", 1, WeaponType.SWORD, 10.0));
 
         // Level validation (level < 1 or level > 3)
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 0, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 4, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 0, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 4, WeaponType.SWORD, 10.0));
 
         // Negative stat values validation
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, -10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, -5.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, WeaponType.SWORD, -10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, ArmorSlot.SHIELD, -5.0));
         assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, -50.0));
 
         // Potion quantity validation
