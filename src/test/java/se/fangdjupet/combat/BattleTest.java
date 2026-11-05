@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Tester för Battle.
+ * Tests for Battle.
  */
 class BattleTest {
 

@@ -1,15 +1,15 @@
 package se.fangdjupet.combat;
 
 /**
- * Hanterar skada från magiska attacker.
+ * Handles damage from magic attacks.
  */
 public class MagicAttack implements AttackStrategy {
 
     /**
-     * Räknar ut skadan för en magisk attack.
+     * Calculates the damage for a magic attack.
      *
-     * @param baseDamage attackens grundskada
-     * @return skadan som attacken gör
+     * @param baseDamage the base damage of the attack
+     * @return the damage dealt by the attack
      */
     @Override
     public double calculateDamage(double baseDamage) {

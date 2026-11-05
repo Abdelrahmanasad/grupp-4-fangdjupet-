@@ -1,15 +1,15 @@
 package se.fangdjupet.combat;
 
 /**
- * Hanterar skada från distansattacker.
+ * Handles damage from ranged attacks.
  */
 public class RangedAttack implements AttackStrategy {
 
     /**
-     * Räknar ut skadan för en distansattack.
+     * Calculates the damage for a ranged attack.
      *
-     * @param baseDamage attackens grundskada
-     * @return skadan som attacken gör
+     * @param baseDamage the base damage of the attack
+     * @return the damage dealt by the attack
      */
     @Override
     public double calculateDamage(double baseDamage) {

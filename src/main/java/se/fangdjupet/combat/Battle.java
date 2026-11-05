@@ -3,7 +3,7 @@ import se.fangdjupet.core.EventBus;
 import se.fangdjupet.core.EventType;
 
 /**
- * Hanterar strider mellan hjältar och fiender.
+ * Handles battles between heroes and enemies.
  */
 public class Battle {
 
@@ -13,11 +13,11 @@ public class Battle {
     private boolean started;
 
     /**
-     * Skapar en strid mellan en hjälte och en fiende.
+     * Creates a battle between a hero and an enemy.
      *
-     * @param hero hjälten som deltar i striden
-     * @param enemy fienden som deltar i striden
-     * @param eventBus hanterar händelser under striden
+     * @param hero the hero taking part in the battle
+     * @param enemy the enemy taking part in the battle
+     * @param eventBus handles events during the battle
      */
     public Battle(Hero hero, Enemy enemy, EventBus eventBus) {
         if (hero == null) {
@@ -36,16 +36,16 @@ public class Battle {
     }
 
     /**
-     * Kontrollerar om striden är slut.
+     * Checks if the battle is finished.
      *
-     * @return true om hjälten eller fienden är död, annars false
+     * @return true if the hero or enemy is dead, otherwise false
      */
     public boolean isFinished() {
         return !hero.isAlive() || !enemy.isAlive();
     }
 
     /**
-     * Startar striden och skickar en händelse.
+     * Starts the battle and sends an event.
      */
     public void start() {
         ensureBattleActive();
@@ -61,7 +61,7 @@ public class Battle {
     }
 
     /**
-     * Kontrollerar att striden fortfarande pågår.
+     * Checks that the battle is still active.
      */
     private void ensureBattleActive() {
         if (isFinished()) {
@@ -70,12 +70,12 @@ public class Battle {
     }
 
     /**
-     * Genomför en attack mot en karaktär.
+     * Performs an attack against a character.
      *
-     * @param target karaktären som tar skada
-     * @param strategy vilken attacktyp som används
-     * @param baseDamage attackens grundskada
-     * @param defenceBonus målets försvar
+     * @param target the character taking damage
+     * @param strategy the type of attack used
+     * @param baseDamage the base damage of the attack
+     * @param defenceBonus the target's defence
      */
     private void performAttack(Combatant target,
                                AttackStrategy strategy,
@@ -107,31 +107,31 @@ public class Battle {
     }
 
     /**
-     * Låter hjälten attackera fienden.
+     * Lets the hero attack the enemy.
      *
-     * @param strategy vilken typ av attack som används
-     * @param baseDamage attackens grundskada
+     * @param strategy the type of attack used
+     * @param baseDamage the base damage of the attack
      */
     public void heroAttack(AttackStrategy strategy, double baseDamage) {
         performAttack(enemy, strategy, baseDamage, 0);
     }
 
     /**
-     * Låter fienden attackera hjälten.
+     * Lets the enemy attack the hero.
      *
-     * @param strategy vilken typ av attack som används
-     * @param baseDamage attackens grundskada
+     * @param strategy the type of attack used
+     * @param baseDamage the base damage of the attack
      */
     public void enemyAttack(AttackStrategy strategy, double baseDamage) {
         performAttack(hero, strategy, baseDamage, 0);
     }
 
     /**
-     * Låter fienden attackera hjälten med hänsyn till försvar.
+     * Lets the enemy attack the hero while considering defence.
      *
-     * @param strategy vilken typ av attack som används
-     * @param baseDamage attackens grundskada
-     * @param defenceBonus hjältens försvar
+     * @param strategy the type of attack used
+     * @param baseDamage the base damage of the attack
+     * @param defenceBonus the hero's defence
      */
     public void enemyAttack(AttackStrategy strategy,
                             double baseDamage,
@@ -140,9 +140,9 @@ public class Battle {
     }
 
     /**
-     * Läker hjälten under striden.
+     * Heals the hero during the battle.
      *
-     * @param amount hur mycket hälsa som ska återställas
+     * @param amount how much health to restore
      */
     public void healHero(double amount) {
         ensureBattleActive();

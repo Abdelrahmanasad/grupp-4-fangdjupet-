@@ -1,15 +1,15 @@
 package se.fangdjupet.combat;
 
 /**
- * Gemensamt interface för olika typer av attacker.
+ * Common interface for different types of attacks.
  */
 public interface AttackStrategy {
 
     /**
-     * Räknar ut skadan utifrån attacktypen.
+     * Calculates damage based on the attack type.
      *
-     * @param baseDamage skadan innan attacktypen påverkar den
-     * @return den beräknade skadan
+     * @param baseDamage damage before the attack type affects it
+     * @return the calculated damage
      */
     double calculateDamage(double baseDamage);
 }

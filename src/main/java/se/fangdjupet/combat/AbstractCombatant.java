@@ -1,8 +1,8 @@
 package se.fangdjupet.combat;
 
 /**
- * Gemensam grund för hjältar och fiender.
- * Hanterar namn, hälsa, skada och läkning.
+ * Common base for heroes and enemies.
+ * Handles name, health, damage and healing.
  */
 public abstract class AbstractCombatant implements Combatant {
 
@@ -11,11 +11,11 @@ public abstract class AbstractCombatant implements Combatant {
     private final double maxHealth;
 
     /**
-     * Skapar en karaktär med namn, nuvarande hälsa och maximal hälsa.
+     * Creates a character with a name, current health and maximum health.
      *
-     * @param name karaktärens namn
-     * @param health nuvarande hälsa
-     * @param maxHealth maximal hälsa
+     * @param name the character's name
+     * @param health current health
+     * @param maxHealth maximum health
      */
     protected AbstractCombatant(String name, double health, double maxHealth) {
         if (maxHealth <= 0) {
@@ -32,9 +32,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Hämtar karaktärens namn.
+     * Gets the character's name.
      *
-     * @return karaktärens namn
+     * @return the character's name
      */
     @Override
     public String getName() {
@@ -42,9 +42,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Hämtar karaktärens nuvarande hälsa.
+     * Gets the character's current health.
      *
-     * @return nuvarande hälsa
+     * @return current health
      */
     @Override
     public double getHealth() {
@@ -52,9 +52,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Hämtar karaktärens maximala hälsa.
+     * Gets the character's maximum health.
      *
-     * @return maximal hälsa
+     * @return maximum health
      */
     @Override
     public double maxHealth() {
@@ -62,9 +62,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Minskar hälsan utan att gå under noll.
+     * Reduces health without going below zero.
      *
-     * @param amount hur mycket skada karaktären tar
+     * @param amount how much damage the character takes
      */
     @Override
     public void takeDamage(double amount) {
@@ -76,9 +76,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Kontrollerar om karaktären fortfarande lever.
+     * Checks if the character is still alive.
      *
-     * @return true om hälsan är över noll, annars false
+     * @return true if health is above zero, otherwise false
      */
     @Override
     public boolean isAlive() {
@@ -86,9 +86,9 @@ public abstract class AbstractCombatant implements Combatant {
     }
 
     /**
-     * Ökar hälsan utan att gå över maxHealth.
+     * Increases health without going above maxHealth.
      *
-     * @param amount hur mycket hälsa som ska återställas
+     * @param amount how much health to restore
      */
     public void heal(double amount) {
         if (amount < 0) {

@@ -1,15 +1,15 @@
 package se.fangdjupet.combat;
 
 /**
- * Hanterar gemensamma beräkningar av skada.
+ * Handles shared damage calculations.
  */
 public final class DamageCalculator {
 
     /**
-     * Kontrollerar grundskadan och returnerar den.
+     * Checks the base damage and returns it.
      *
-     * @param baseDamage attackens grundskada
-     * @return den beräknade skadan
+     * @param baseDamage the base damage of the attack
+     * @return the calculated damage
      */
     public static double calculateDamage(double baseDamage) {
         if (baseDamage < 0) {
@@ -20,11 +20,11 @@ public final class DamageCalculator {
     }
 
     /**
-     * Beräknar skada efter försvar.
+     * Calculates damage after defence.
      *
-     * @param baseDamage attackens grundskada
-     * @param defenceBonus försvar från rustning
-     * @return skadan efter försvar, minst 0
+     * @param baseDamage the base damage of the attack
+     * @param defenceBonus defence from armor
+     * @return damage after defence, at least 0
      */
     public static double calculateDamage(double baseDamage, double defenceBonus) {
         if (defenceBonus < 0) {

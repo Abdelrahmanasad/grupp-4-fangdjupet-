@@ -1,42 +1,42 @@
 package se.fangdjupet.combat;
 
 /**
- * Gemensamt interface för hjältar och fiender.
+ * Common interface for heroes and enemies.
  */
 public interface Combatant {
 
     /**
-     * Hämtar karaktärens namn.
+     * Gets the character's name.
      *
-     * @return karaktärens namn
+     * @return the character's name
      */
     String getName();
 
     /**
-     * Hämtar karaktärens nuvarande hälsa.
+     * Gets the character's current health.
      *
-     * @return nuvarande hälsa
+     * @return current health
      */
     double getHealth();
 
     /**
-     * Hämtar karaktärens maximala hälsa.
+     * Gets the character's maximum health.
      *
-     * @return maximal hälsa
+     * @return maximum health
      */
     double maxHealth();
 
     /**
-     * Minskar karaktärens hälsa med angiven skada.
+     * Reduces the character's health by the given damage.
      *
-     * @param amount hur mycket skada karaktären tar
+     * @param amount how much damage the character takes
      */
     void takeDamage(double amount);
 
     /**
-     * Kontrollerar om karaktären fortfarande lever.
+     * Checks if the character is still alive.
      *
-     * @return true om karaktären lever, annars false
+     * @return true if the character is alive, otherwise false
      */
     boolean isAlive();
 }

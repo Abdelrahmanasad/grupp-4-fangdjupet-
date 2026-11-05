@@ -1,17 +1,17 @@
 package se.fangdjupet.combat;
 
 /**
- * Representerar hjälten i spelet.
- * Ärver hälsa och skadehantering från AbstractCombatant.
+ * Represents the hero in the game.
+ * Inherits health and damage handling from AbstractCombatant.
  */
 public class Hero extends AbstractCombatant {
 
     /**
-     * Skapar en hjälte med namn, nuvarande hälsa och maximal hälsa.
+     * Creates a hero with a name, current health and maximum health.
      *
-     * @param name hjältens namn
-     * @param health nuvarande hälsa
-     * @param maxHealth maximal hälsa
+     * @param name the hero's name
+     * @param health current health
+     * @param maxHealth maximum health
      */
     public Hero(String name, double health, double maxHealth) {
         super(name, health, maxHealth);
