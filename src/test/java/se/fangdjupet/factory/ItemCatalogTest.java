@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import se.fangdjupet.items.*;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,5 +45,14 @@ class ItemCatalogTest {
 
         List<Potion> potions = ItemCatalog.Potions.getAll();
         assertEquals(2, potions.size());
+    }
+
+    @Test
+    @DisplayName("Private constructor should be private")
+    void testPrivateConstructor() throws Exception {
+        Constructor<ItemCatalog> constructor = ItemCatalog.class.getDeclaredConstructor();
+        assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        constructor.newInstance();
     }
 }

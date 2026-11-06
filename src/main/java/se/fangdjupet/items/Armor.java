@@ -28,7 +28,8 @@ public class Armor extends Item {
     }
 
     public double getTotalDefence() {
-        return armorSlot.getBaseDefense() + defenceBonus;
+        double baseDefence = armorSlot.getBaseDefence();
+        return (baseDefence + defenceBonus) * (1 + 0.25 * (getLevel() - 1));
     }
 
     @Override

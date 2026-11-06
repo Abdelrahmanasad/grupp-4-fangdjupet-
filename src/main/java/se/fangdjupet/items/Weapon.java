@@ -28,7 +28,8 @@ public class Weapon extends Item {
     }
 
     public double getTotalDamage() {
-        return weaponType.getBaseDamage() + bonusDamage;
+        double baseDamage = weaponType.getBaseDamage();
+        return (baseDamage + bonusDamage) * (1 + 0.25 * (getLevel() - 1));
     }
 
     @Override

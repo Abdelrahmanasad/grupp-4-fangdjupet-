@@ -1,18 +1,18 @@
 package se.fangdjupet.items;
 
 public enum ArmorSlot {
-    HELMET(5.0),
-    CHESTPLATE(10.0),
-    LEGGINGS(8.0),
-    SHIELD(15.0);
+    HELMET(2.0),
+    CHESTPLATE(3.0),
+    LEGGINGS(2.0),
+    SHIELD(3.0);
 
-    private final double baseDefense;
+    private final double baseDefence;
 
-    ArmorSlot(double baseDefense) {
-        this.baseDefense = baseDefense;
+    ArmorSlot(double baseDefence) {
+        this.baseDefence = baseDefence;
     }
 
-    public double getBaseDefense() {
-        return baseDefense;
+    public double getBaseDefence() {
+        return baseDefence;
     }
 }
