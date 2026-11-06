@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Tests for Hero.
+ */
 public class HeroTest {
 
     @Test
@@ -70,10 +73,18 @@ public class HeroTest {
     void heroReturnsMaxHealth() {
         Hero hero = new Hero("Johan", 75, 100);
 
-        assertEquals(100, hero.maxHealth());
+        assertEquals(100, hero.getMaxHealth());
     }
 
+    @Test
+    void heroCannotHaveNullOrBlankName() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero(null, 100, 100));
 
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("", 100, 100));
 
-
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("   ", 100, 100));
+    }
 }

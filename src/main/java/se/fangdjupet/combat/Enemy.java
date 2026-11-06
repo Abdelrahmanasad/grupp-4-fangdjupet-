@@ -1,17 +1,17 @@
 package se.fangdjupet.combat;
 
 /**
- * Representerar en fiende i spelet.
- * Ärver hälsa och skadehantering från AbstractCombatant.
+ * Represents an enemy in the game.
+ * Inherits health and damage handling from AbstractCombatant.
  */
 public class Enemy extends AbstractCombatant {
 
     /**
-     * Skapar en fiende med namn, nuvarande hälsa och maximal hälsa.
+     * Creates an enemy with a name, current health and maximum health.
      *
-     * @param name fiendens namn
-     * @param health nuvarande hälsa
-     * @param maxHealth maximal hälsa
+     * @param name the enemy's name
+     * @param health current health
+     * @param maxHealth maximum health
      */
     public Enemy(String name, double health, double maxHealth) {
         super(name, health, maxHealth);
