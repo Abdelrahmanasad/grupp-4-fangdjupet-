@@ -1,14 +1,12 @@
 /**
- * Shared contract and event system (Observer pattern).
+ * World, game engine and console UI.
  * <p>
  * Owner: Oskar.
  * <p>
- * Contents:
+ * Connects the {@code combat}, {@code items} and {@code core} packages into a playable game.
+ * The other packages never depend on {@code game}.
  * <ul>
- *     <li>{@link se.fangdjupet.core.EventType} - enum with every type of event in the game</li>
- *     <li>{@link se.fangdjupet.core.GameEvent} - record describing a single event</li>
- *     <li>{@link se.fangdjupet.core.GameEventListener} - interface for everything that listens to events</li>
- *     <li>{@link se.fangdjupet.core.EventBus} - class that forwards events to all listeners</li>
+ *     <li>{@link se.fangdjupet.game.GameState} - everything that describes an ongoing game</li>
+ *     <li>{@link se.fangdjupet.game.Dungeon} - the sequence of rooms and enemies</li>
  * </ul>
  */
-package se.fangdjupet.core;
