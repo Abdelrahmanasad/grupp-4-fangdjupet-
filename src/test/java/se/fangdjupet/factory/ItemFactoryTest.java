@@ -30,6 +30,9 @@ class ItemFactoryTest {
         assertEquals(ArmorSlot.HELMET, helmet.getArmorSlot());
         assertEquals(2.0, helmet.getDefenceBonus());
         assertEquals((ArmorSlot.HELMET.getBaseDefence() + 2.0) * 1.0, helmet.getTotalDefence());
+
+        Armor upgradedHelmet = ItemFactory.createArmor("Iron Helmet", 2, ArmorSlot.HELMET, 2.0);
+        assertEquals((ArmorSlot.HELMET.getBaseDefence() + 2.0) * 1.25, upgradedHelmet.getTotalDefence());
     }
 
     @Test
