@@ -21,4 +21,36 @@ public class DamageCalculatorTest {
         assertThrows(IllegalArgumentException.class,
                 () -> DamageCalculator.calculateDamage(-10));
     }
+
+    @Test
+    void damageCalculatorCannotHaveNaNDamage() {
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(Double.NaN));
+    }
+
+    @Test
+    void damageCalculatorCannotHaveInfiniteDamage() {
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(Double.POSITIVE_INFINITY));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(Double.NEGATIVE_INFINITY));
+    }
+
+    @Test
+    void damageCalculatorCannotHaveNaNDefence() {
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(30, Double.NaN));
+    }
+
+    @Test
+    void damageCalculatorCannotHaveInfiniteDefence() {
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(
+                        30, Double.POSITIVE_INFINITY));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> DamageCalculator.calculateDamage(
+                        30, Double.NEGATIVE_INFINITY));
+    }
 }
