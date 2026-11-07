@@ -2,6 +2,9 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
+/** * A piece of armor worn in one ArmorSlot that reduces the damage the hero takes.
+ * * Total defence = (base defence of the slot + bonus defence) * level multiplier. */
+
 public class Armor extends Item {
     private final ArmorSlot armorSlot;
     private final double defenceBonus;
@@ -28,8 +31,7 @@ public class Armor extends Item {
     }
 
     public double getTotalDefence() {
-        double baseDefence = armorSlot.getBaseDefence();
-        return (baseDefence + defenceBonus) * (1 + 0.25 * (getLevel() - 1));
+        return (armorSlot.getBaseDefence() + defenceBonus) * levelMultiplier();
     }
 
     @Override

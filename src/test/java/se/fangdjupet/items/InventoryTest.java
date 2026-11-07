@@ -139,6 +139,7 @@ class InventoryTest {
         assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, WeaponType.SWORD, -10.0));
         assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, ArmorSlot.SHIELD, -5.0));
         assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, -50.0));
+        assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, 0.0));
 
 
         assertThrows(IllegalArgumentException.class, () -> new Potion("Health Potion", 1, 20.0, 0));
