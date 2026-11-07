@@ -85,14 +85,14 @@ public class GameState {
      * @return base damage plus the damage of the equipped weapon
      */
     public double getAttackDamage() {
-        return BASE_ATTACK_DAMAGE + getEquippedWeapon().map(Weapon::getDamage).orElse(0.0);
+        return BASE_ATTACK_DAMAGE + getEquippedWeapon().map(Weapon::getTotalDamage).orElse(0.0);
     }
 
     /**
      * @return defence from the equipped armor, 0 without armor
      */
     public double getDefence() {
-        return getEquippedArmor().map(Armor::getDefenceBonus).orElse(0.0);
+        return getEquippedArmor().map(Armor::getTotalDefence).orElse(0.0);
     }
 
     /**

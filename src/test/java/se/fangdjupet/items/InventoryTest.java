@@ -28,10 +28,10 @@ class InventoryTest {
     @Test
     @DisplayName("Should add items and enforce max capacity")
     void testAddItemAndCapacity() {
-        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
-        Item shield = ItemFactory.createItem(ItemType.ARMOR, "Shield", 1, 5.0);
-        Item potion = ItemFactory.createItem(ItemType.POTION, "Potion", 1, 15.0);
-        Item extraPotion = ItemFactory.createItem(ItemType.POTION, "Extra Potion", 1, 15.0);
+        Item sword = ItemFactory.createWeapon("Sword", 1, WeaponType.SWORD, 10.0);
+        Item shield = ItemFactory.createArmor("Shield", 1, ArmorSlot.SHIELD, 5.0);
+        Item potion = ItemFactory.createPotion("Potion", 1, 15.0);
+        Item extraPotion = ItemFactory.createPotion("Extra Potion", 1, 15.0);
 
         assertTrue(inventory.addItem(sword));
         assertTrue(inventory.addItem(shield));
@@ -51,7 +51,7 @@ class InventoryTest {
     @Test
     @DisplayName("Should successfully remove an existing item from inventory")
     void testRemoveExistingItem() {
-        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        Item sword = ItemFactory.createWeapon("Sword", 1, WeaponType.SWORD, 10.0);
         inventory.addItem(sword);
 
         boolean removed = inventory.removeItem(sword);
@@ -63,7 +63,7 @@ class InventoryTest {
     @Test
     @DisplayName("Should return false when attempting to remove an item not in inventory")
     void testRemoveNonExistentItem() {
-        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        Item sword = ItemFactory.createWeapon("Sword", 1, WeaponType.SWORD, 10.0);
 
         boolean removed = inventory.removeItem(sword);
 
@@ -79,9 +79,9 @@ class InventoryTest {
     @Test
     @DisplayName("Should filter items by type using getItemsOfType()")
     void testGetItemsOfType() {
-        inventory.addItem(ItemFactory.createItem(ItemType.WEAPON, "Sword 1", 1, 10.0));
-        inventory.addItem(ItemFactory.createItem(ItemType.WEAPON, "Sword 2", 2, 20.0));
-        inventory.addItem(ItemFactory.createItem(ItemType.ARMOR, "Shield", 1, 5.0));
+        inventory.addItem(ItemFactory.createWeapon("Sword 1", 1, WeaponType.SWORD, 10.0));
+        inventory.addItem(ItemFactory.createWeapon("Sword 2", 2, WeaponType.SWORD, 20.0));
+        inventory.addItem(ItemFactory.createArmor("Shield", 1, ArmorSlot.SHIELD, 5.0));
 
         List<Weapon> weapons = inventory.getItemsOfType(Weapon.class);
         List<Armor> armors = inventory.getItemsOfType(Armor.class);
@@ -93,11 +93,11 @@ class InventoryTest {
     @Test
     @DisplayName("Should throw exception when attempting to modify unmodifiable list")
     void testUnmodifiableList() {
-        Item sword = ItemFactory.createItem(ItemType.WEAPON, "Sword", 1, 10.0);
+        Item sword = ItemFactory.createWeapon("Sword", 1, WeaponType.SWORD, 10.0);
         inventory.addItem(sword);
 
         assertThrows(UnsupportedOperationException.class, () -> {
-            inventory.getItems().add(ItemFactory.createItem(ItemType.ARMOR, "Fake Shield", 1, 5.0));
+            inventory.getItems().add(ItemFactory.createArmor("Fake Shield", 1, ArmorSlot.SHIELD, 5.0));
         });
     }
 
@@ -107,12 +107,11 @@ class InventoryTest {
         Potion potion = new Potion("Health Potion", 1, 20.0, 2);
         inventory.addItem(potion);
 
-        // Första användningen: 1 kvar i stacken -> finns kvar i inventory
+
         assertTrue(potion.use(inventory), "Should return true because 1 potion remains");
         assertEquals(1, potion.getQuantity());
         assertEquals(1, inventory.getItems().size());
 
-        // Andra användningen: 0 kvar -> returnerar false och plockas bort ur inventory automatiskt
         assertFalse(potion.use(inventory), "Should return false because 0 potions remain");
         assertEquals(0, potion.getQuantity());
         assertEquals(0, inventory.getItems().size(), "Potion should be automatically removed from inventory");
@@ -129,20 +128,20 @@ class InventoryTest {
     @DisplayName("Item constructor should validate invalid arguments")
     void testItemValidation() {
         // Name validation
-        assertThrows(NullPointerException.class, () -> new Weapon(null, 1, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("", 1, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("   ", 1, 10.0));
+        assertThrows(NullPointerException.class, () -> new Weapon(null, 1, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("", 1, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("   ", 1, WeaponType.SWORD, 10.0));
 
-        // Level validation (level < 1 or level > 3)
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 0, 10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 4, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 0, WeaponType.SWORD, 10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 4, WeaponType.SWORD, 10.0));
 
-        // Negative stat values validation
-        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, -10.0));
-        assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, -5.0));
+
+        assertThrows(IllegalArgumentException.class, () -> new Weapon("Sword", 1, WeaponType.SWORD, -10.0));
+        assertThrows(IllegalArgumentException.class, () -> new Armor("Shield", 1, ArmorSlot.SHIELD, -5.0));
         assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, -50.0));
+        assertThrows(IllegalArgumentException.class, () -> new Potion("Potion", 1, 0.0));
 
-        // Potion quantity validation
+
         assertThrows(IllegalArgumentException.class, () -> new Potion("Health Potion", 1, 20.0, 0));
         assertThrows(IllegalArgumentException.class, () -> new Potion("Health Potion", 1, 20.0, -1));
     }
