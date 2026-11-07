@@ -4,10 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.fangdjupet.combat.Enemy;
 import se.fangdjupet.combat.Hero;
-import se.fangdjupet.items.Armor;
-import se.fangdjupet.items.Inventory;
-import se.fangdjupet.items.Potion;
-import se.fangdjupet.items.Weapon;
+import se.fangdjupet.items.*;
 
 import java.util.List;
 
@@ -42,19 +39,19 @@ class GameStateTest {
 
     @Test
     void equippedWeaponAddsDamage() {
-        Weapon sword = new Weapon("Sword", 1, 10);
+        Weapon sword = new Weapon("Sword", 1, WeaponType.SWORD);
         inventory.addItem(sword);
 
         state.equip(sword);
 
         assertSame(sword, state.getEquippedWeapon().orElseThrow());
-        assertEquals(GameState.BASE_ATTACK_DAMAGE + 10, state.getAttackDamage(), DELTA);
+        assertEquals(GameState.BASE_ATTACK_DAMAGE + sword.getTotalDamage(), state.getAttackDamage(), DELTA);
     }
 
     @Test
     void equippingNewWeaponReplacesOldOne() {
-        Weapon sword = new Weapon("Sword", 1, 10);
-        Weapon axe = new Weapon("Axe", 2, 14);
+        Weapon sword = new Weapon("Sword", 1, WeaponType.SWORD);
+        Weapon axe = new Weapon("Axe", 2, WeaponType.AXE);
         inventory.addItem(sword);
         inventory.addItem(axe);
 
@@ -66,18 +63,18 @@ class GameStateTest {
 
     @Test
     void defenceComesFromEquippedArmor() {
-        Armor shield = new Armor("Shield", 1, 4);
+        Armor shield = new Armor("Shield", 1, ArmorSlot.SHIELD);
         inventory.addItem(shield);
 
         assertEquals(0, state.getDefence(), DELTA);
         state.equip(shield);
 
-        assertEquals(4, state.getDefence(), DELTA);
+        assertEquals(shield.getTotalDefence(), state.getDefence(), DELTA);
     }
 
     @Test
     void cannotEquipItemThatIsNotInInventory() {
-        Weapon sword = new Weapon("Sword", 1, 10);
+        Weapon sword = new Weapon("Sword", 1, WeaponType.SWORD);
 
         assertThrows(IllegalArgumentException.class, () -> state.equip(sword));
         assertTrue(state.getEquippedWeapon().isEmpty());
