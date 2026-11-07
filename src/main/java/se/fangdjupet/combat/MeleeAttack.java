@@ -1,15 +1,15 @@
 package se.fangdjupet.combat;
 
 /**
- * Hanterar skada från närstridsattacker.
+ * Handles damage from melee attacks.
  */
 public class MeleeAttack implements AttackStrategy {
 
     /**
-     * Räknar ut skadan för en närstridsattack.
+     * Calculates the damage for a melee attack.
      *
-     * @param baseDamage attackens grundskada
-     * @return skadan som attacken gör
+     * @param baseDamage the base damage of the attack
+     * @return the damage dealt by the attack
      */
     @Override
     public double calculateDamage(double baseDamage) {

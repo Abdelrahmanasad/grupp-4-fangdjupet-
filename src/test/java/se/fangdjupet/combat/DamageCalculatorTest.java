@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tester för DamageCalculator.
+ * Tests for DamageCalculator.
  */
 public class DamageCalculatorTest {
 
