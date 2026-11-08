@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The hero's inventory with a maximum capacity.
+ * Uses generics in getItemsOfType() to filter items by class, e.g. only weapons.
+ */
+
 public class Inventory {
     private final int maxCapacity;
     private final List<Item> items;

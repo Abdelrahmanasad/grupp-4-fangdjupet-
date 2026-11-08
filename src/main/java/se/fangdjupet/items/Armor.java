@@ -2,8 +2,11 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
-/** * A piece of armor worn in one ArmorSlot that reduces the damage the hero takes.
- * * Total defence = (base defence of the slot + bonus defence) * level multiplier. */
+/**
+ * A piece of armor worn in one ArmorSlot that reduces the damage the hero takes.
+ * Total defence = (base defence of the slot + bonus defence) x level multiplier.
+ */
+
 
 public class Armor extends Item {
     private final ArmorSlot armorSlot;

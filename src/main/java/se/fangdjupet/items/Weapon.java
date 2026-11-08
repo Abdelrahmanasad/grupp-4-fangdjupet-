@@ -2,8 +2,10 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
-/** * A weapon that increases the hero's damage. * Total damage = (base damage of the WeaponType + bonus damage)
- * * level multiplier. */
+/**
+ * A weapon that increases the hero's damage.
+ * Total damage = (base damage of the WeaponType + bonus damage) x level multiplier.
+ */
 
 public class Weapon extends Item {
     private final WeaponType weaponType;
