@@ -73,6 +73,34 @@ class GameStateTest {
     }
 
     @Test
+    void armorInDifferentSlotsAddsUp() {
+        Armor helmet = new Armor("Helmet", 1, ArmorSlot.HELMET);
+        Armor shield = new Armor("Shield", 1, ArmorSlot.SHIELD);
+        inventory.addItem(helmet);
+        inventory.addItem(shield);
+
+        state.equip(helmet);
+        state.equip(shield);
+
+        assertEquals(helmet.getTotalDefence() + shield.getTotalDefence(), state.getDefence(), DELTA);
+        assertEquals(2, state.getEquippedArmor().size());
+    }
+
+    @Test
+    void armorInSameSlotReplacesOldOne() {
+        Armor oldHelmet = new Armor("Old Helmet", 1, ArmorSlot.HELMET);
+        Armor newHelmet = new Armor("New Helmet", 2, ArmorSlot.HELMET);
+        inventory.addItem(oldHelmet);
+        inventory.addItem(newHelmet);
+
+        state.equip(oldHelmet);
+        state.equip(newHelmet);
+
+        assertSame(newHelmet, state.getEquippedArmor(ArmorSlot.HELMET).orElseThrow());
+        assertEquals(newHelmet.getTotalDefence(), state.getDefence(), DELTA);
+    }
+
+    @Test
     void cannotEquipItemThatIsNotInInventory() {
         Weapon sword = new Weapon("Sword", 1, WeaponType.SWORD);
 
