@@ -2,8 +2,10 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
-/** * A stack of healing potions. Using one lowers the quantity,
- * * and the last one is removed from the inventory. */
+/**
+ * A stack of healing potions. Using one lowers the quantity,
+ * and the last one is removed from the inventory.
+ */
 
 public class Potion extends Item {
     private final double healthBonus;

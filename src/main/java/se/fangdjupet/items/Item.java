@@ -2,8 +2,10 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
-/** * Base class for everything the hero can carry: weapons, armor and potions.
- * * Every item has a name and a level from 1 to 3. */
+/**
+ * Base class for everything the hero can carry: weapons, armor and potions.
+ * Every item has a name and a level from 1 to 3.
+ */
 
 public abstract class Item {
     private final String name;
