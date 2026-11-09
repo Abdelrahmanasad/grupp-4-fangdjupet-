@@ -2,14 +2,19 @@ package se.fangdjupet.items;
 
 import java.util.Objects;
 
+/**
+ * A stack of healing potions. Using one lowers the quantity,
+ * and the last one is removed from the inventory.
+ */
+
 public class Potion extends Item {
     private final double healthBonus;
     private int quantity;
 
     public Potion(String name, int level, double healthBonus, int quantity) {
         super(name, level);
-        if (healthBonus < 0) {
-            throw new IllegalArgumentException("Health bonus cannot be negative");
+        if (healthBonus <= 0) {
+            throw new IllegalArgumentException("Health bonus must be greater than 0");
         }
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be at least 1");
