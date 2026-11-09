@@ -18,12 +18,11 @@ public abstract class AbstractCombatant implements Combatant {
      * @param maxHealth maximum health
      */
     protected AbstractCombatant(String name, double health, double maxHealth) {
-        if (maxHealth <= 0) {
-            throw new IllegalArgumentException(
-                    "Max health must be greater than 0");
+        if (!Double.isFinite(maxHealth) || maxHealth <= 0) {
+            throw new IllegalArgumentException("Invalid max health");
         }
 
-        if (health < 0 || health > maxHealth) {
+        if (!Double.isFinite(health) || health < 0 || health > maxHealth) {
             throw new IllegalArgumentException("Invalid health");
         }
 
@@ -73,8 +72,8 @@ public abstract class AbstractCombatant implements Combatant {
      */
     @Override
     public void takeDamage(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Damage cannot be negative");
+        if (!Double.isFinite(amount) || amount < 0) {
+            throw new IllegalArgumentException("Invalid damage amount");
         }
 
         health = Math.max(0, health - amount);
@@ -96,8 +95,8 @@ public abstract class AbstractCombatant implements Combatant {
      * @param amount how much health to restore
      */
     public void heal(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Healing cannot be negative");
+        if (!Double.isFinite(amount) || amount < 0) {
+            throw new IllegalArgumentException("Invalid healing amount");
         }
 
         health = Math.min(maxHealth, health + amount);

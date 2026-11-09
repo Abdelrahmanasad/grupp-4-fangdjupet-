@@ -87,4 +87,65 @@ public class HeroTest {
         assertThrows(IllegalArgumentException.class,
                 () -> new Hero("   ", 100, 100));
     }
+
+    @Test
+    void heroCannotHealNaN() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.heal(Double.NaN));
+
+        assertEquals(100, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotTakeNaNDamage() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.takeDamage(Double.NaN));
+
+        assertEquals(100, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotHealInfiniteAmount() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.heal(Double.POSITIVE_INFINITY));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.heal(Double.NEGATIVE_INFINITY));
+
+        assertEquals(100, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotTakeInfiniteDamage() {
+        Hero hero = new Hero("Knight", 100, 100);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.takeDamage(Double.POSITIVE_INFINITY));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> hero.takeDamage(Double.NEGATIVE_INFINITY));
+
+        assertEquals(100, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotHaveInvalidHealthValues() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("Knight", Double.NaN, 100));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("Knight", 100, Double.NaN));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("Knight", Double.POSITIVE_INFINITY, 100));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new Hero("Knight", 100, Double.POSITIVE_INFINITY));
+    }
 }

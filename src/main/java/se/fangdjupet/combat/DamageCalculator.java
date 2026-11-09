@@ -15,8 +15,8 @@ public final class DamageCalculator {
      * @return the calculated damage
      */
     public static double calculateDamage(double baseDamage) {
-        if (baseDamage < 0) {
-            throw new IllegalArgumentException("Damage cannot be negative");
+        if (!Double.isFinite(baseDamage) || baseDamage < 0) {
+            throw new IllegalArgumentException("Invalid base damage");
         }
 
         return baseDamage;
@@ -31,9 +31,9 @@ public final class DamageCalculator {
      */
     public static double calculateDamage(
             double baseDamage, double defenceBonus) {
-        if (defenceBonus < 0) {
+        if (!Double.isFinite(defenceBonus) || defenceBonus < 0) {
             throw new IllegalArgumentException(
-                    "Defence bonus cannot be negative");
+                    "Invalid defence bonus");
         }
 
         return Math.max(0, calculateDamage(baseDamage) - defenceBonus);
