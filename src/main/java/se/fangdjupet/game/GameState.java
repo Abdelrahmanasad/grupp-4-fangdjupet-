@@ -2,11 +2,15 @@ package se.fangdjupet.game;
 
 import se.fangdjupet.combat.Hero;
 import se.fangdjupet.items.Armor;
+import se.fangdjupet.items.ArmorSlot;
 import se.fangdjupet.items.Inventory;
 import se.fangdjupet.items.Item;
 import se.fangdjupet.items.Potion;
 import se.fangdjupet.items.Weapon;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,8 +32,8 @@ public class GameState {
     private final Hero hero;
     private final Inventory inventory;
     private final Dungeon dungeon;
+    private final Map<ArmorSlot, Armor> equippedArmor = new EnumMap<>(ArmorSlot.class);
     private Weapon equippedWeapon;
-    private Armor equippedArmor;
 
     /**
      * Creates a game state.
@@ -57,28 +61,37 @@ public class GameState {
     }
 
     /**
-     * Equips armor from the inventory. Replaces the current armor.
+     * Equips armor from the inventory in its own slot.
+     * Replaces the armor that was worn in the same slot.
      *
      * @param armor the armor to equip
      * @throws IllegalArgumentException if the armor is not in the inventory
      */
     public void equip(Armor armor) {
         requireInInventory(armor);
-        equippedArmor = armor;
+        equippedArmor.put(armor.getArmorSlot(), armor);
     }
 
     /**
-     * @return the equipped weapon, or an empty Optional if the hero fights bare-handed
+     * @return the equipped weapon, or an empty Optional if the hero fights bare handed
      */
     public Optional<Weapon> getEquippedWeapon() {
         return Optional.ofNullable(equippedWeapon);
     }
 
     /**
-     * @return the equipped armor, or an empty Optional if the hero wears none
+     * @param slot the armor slot to check
+     * @return the armor worn in the slot, or an empty Optional if the slot is empty
      */
-    public Optional<Armor> getEquippedArmor() {
-        return Optional.ofNullable(equippedArmor);
+    public Optional<Armor> getEquippedArmor(ArmorSlot slot) {
+        return Optional.ofNullable(equippedArmor.get(slot));
+    }
+
+    /**
+     * @return all worn armor, one per slot (read only)
+     */
+    public Map<ArmorSlot, Armor> getEquippedArmor() {
+        return Collections.unmodifiableMap(equippedArmor);
     }
 
     /**
@@ -89,10 +102,14 @@ public class GameState {
     }
 
     /**
-     * @return defence from the equipped armor, 0 without armor
+     * @return total defence from all worn armor, 0 without armor
      */
     public double getDefence() {
-        return getEquippedArmor().map(Armor::getTotalDefence).orElse(0.0);
+        double defence = 0;
+        for (Armor armor : equippedArmor.values()) {
+            defence += armor.getTotalDefence();
+        }
+        return defence;
     }
 
     /**
