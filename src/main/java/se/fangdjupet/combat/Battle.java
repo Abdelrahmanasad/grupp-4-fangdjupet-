@@ -1,6 +1,7 @@
 package se.fangdjupet.combat;
 import se.fangdjupet.core.EventBus;
 import se.fangdjupet.core.EventType;
+import java.util.Locale;
 
 /**
  * Handles battles between heroes and enemies.
@@ -95,8 +96,10 @@ public class Battle {
 
         target.takeDamage(damage);
 
+        String formattedDamage = String.format(Locale.ROOT, "%.1f", damage);
+
         eventBus.publish(EventType.ATTACK_PERFORMED,
-                target.getName() + " took " + damage + " damage.");
+                target.getName() + " took " + formattedDamage + " damage.");
 
         if (target == enemy && !enemy.isAlive()) {
             eventBus.publish(EventType.ENEMY_DEFEATED,
@@ -156,8 +159,10 @@ public class Battle {
         double healed = hero.getHealth() - healthBefore;
 
         if (healed > 0) {
+            String formattedHealing = String.format(Locale.ROOT, "%.1f", healed);
+
             eventBus.publish(EventType.HERO_HEALED,
-                    hero.getName() + " healed " + healed + " health.");
+                    hero.getName() + " healed " + formattedHealing + " health.");
         }
     }
 }
