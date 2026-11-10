@@ -71,6 +71,17 @@ public class Battle {
     }
 
     /**
+     * Checks that the battle has started and is not finished.
+     */
+    private void ensureBattleInProgress() {
+        if (!started) {
+            throw new IllegalStateException("Call start() before attacking");
+        }
+
+        ensureBattleActive();
+    }
+
+    /**
      * Performs an attack against a character.
      *
      * @param target the character taking damage
@@ -82,7 +93,7 @@ public class Battle {
                                AttackStrategy strategy,
                                double baseDamage,
                                double defenceBonus) {
-        ensureBattleActive();
+        ensureBattleInProgress();
 
         if (strategy == null) {
             throw new IllegalArgumentException(
@@ -151,7 +162,7 @@ public class Battle {
      * @param amount how much health to restore
      */
     public void healHero(double amount) {
-        ensureBattleActive();
+        ensureBattleInProgress();
 
         double healthBefore = hero.getHealth();
         hero.heal(amount);

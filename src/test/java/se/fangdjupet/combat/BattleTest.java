@@ -1,17 +1,17 @@
+
 package se.fangdjupet.combat;
 
-import org.junit.jupiter.api.Test;
-import se.fangdjupet.core.EventBus;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import se.fangdjupet.core.EventType;
-import se.fangdjupet.core.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
+import se.fangdjupet.core.EventBus;
+import se.fangdjupet.core.EventType;
+import se.fangdjupet.core.GameEvent;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for Battle.
@@ -62,6 +62,7 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.heroAttack(new MeleeAttack(), 15);
 
@@ -75,6 +76,7 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.enemyAttack(new MeleeAttack(), 15);
 
@@ -88,6 +90,7 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         hero.takeDamage(100);
 
@@ -104,6 +107,7 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         assertThrows(IllegalArgumentException.class,
                 () -> battle.heroAttack(null, 15));
@@ -134,15 +138,16 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         List<GameEvent> events = new ArrayList<>();
-
         eventBus.subscribe(event -> events.add(event));
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.heroAttack(new MeleeAttack(), 15);
 
-        assertEquals(1, events.size());
-        assertEquals(EventType.ATTACK_PERFORMED, events.get(0).type());
+        assertEquals(2, events.size());
+        assertEquals(EventType.BATTLE_STARTED, events.get(0).type());
+        assertEquals(EventType.ATTACK_PERFORMED, events.get(1).type());
     }
 
     @Test
@@ -155,13 +160,15 @@ class BattleTest {
         eventBus.subscribe(event -> events.add(event));
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.heroAttack(new MeleeAttack(), 50);
 
         assertEquals(0, enemy.getHealth());
-        assertEquals(2, events.size());
-        assertEquals(EventType.ATTACK_PERFORMED, events.get(0).type());
-        assertEquals(EventType.ENEMY_DEFEATED, events.get(1).type());
+        assertEquals(3, events.size());
+        assertEquals(EventType.BATTLE_STARTED, events.get(0).type());
+        assertEquals(EventType.ATTACK_PERFORMED, events.get(1).type());
+        assertEquals(EventType.ENEMY_DEFEATED, events.get(2).type());
     }
 
     @Test
@@ -174,13 +181,15 @@ class BattleTest {
         eventBus.subscribe(event -> events.add(event));
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.enemyAttack(new MeleeAttack(), 100);
 
         assertEquals(0, hero.getHealth());
-        assertEquals(2, events.size());
-        assertEquals(EventType.ATTACK_PERFORMED, events.get(0).type());
-        assertEquals(EventType.HERO_DEFEATED, events.get(1).type());
+        assertEquals(3, events.size());
+        assertEquals(EventType.BATTLE_STARTED, events.get(0).type());
+        assertEquals(EventType.ATTACK_PERFORMED, events.get(1).type());
+        assertEquals(EventType.HERO_DEFEATED, events.get(2).type());
     }
 
     @Test
@@ -190,6 +199,7 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.enemyAttack(new MagicAttack(), 30, 10);
 
@@ -203,9 +213,82 @@ class BattleTest {
         EventBus eventBus = new EventBus();
 
         Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
 
         battle.enemyAttack(new MeleeAttack(), 30, 10);
 
         assertEquals(80, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotAttackBeforeBattleStarts() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+
+        assertThrows(IllegalStateException.class,
+                () -> battle.heroAttack(new MeleeAttack(), 15));
+
+        assertEquals(50, enemy.getHealth());
+    }
+
+    @Test
+    void enemyCannotAttackBeforeBattleStarts() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+
+        assertThrows(IllegalStateException.class,
+                () -> battle.enemyAttack(new MeleeAttack(), 15));
+
+        assertEquals(100, hero.getHealth());
+    }
+
+    @Test
+    void heroCannotHealBeforeBattleStarts() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        hero.takeDamage(30);
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+
+        assertThrows(IllegalStateException.class,
+                () -> battle.healHero(15));
+
+        assertEquals(70, hero.getHealth());
+    }
+
+    @Test
+    void battleCannotStartTwice() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
+
+        assertThrows(IllegalStateException.class, battle::start);
+    }
+
+    @Test
+    void heroCanHealAfterBattleStarts() {
+        Hero hero = new Hero("Hero", 100, 100);
+        Enemy enemy = new Enemy("Goblin", 50, 50);
+        EventBus eventBus = new EventBus();
+
+        hero.takeDamage(30);
+
+        Battle battle = new Battle(hero, enemy, eventBus);
+        battle.start();
+
+        battle.healHero(15);
+
+        assertEquals(85, hero.getHealth());
     }
 }
