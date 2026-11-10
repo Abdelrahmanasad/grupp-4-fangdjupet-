@@ -11,7 +11,7 @@ public abstract class Item {
     private final String name;
     private final int level;
 
-    public Item(String name, int level) {
+    protected Item(String name, int level) {
         Objects.requireNonNull(name, "Name cannot be null");
         if (name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be blank");
