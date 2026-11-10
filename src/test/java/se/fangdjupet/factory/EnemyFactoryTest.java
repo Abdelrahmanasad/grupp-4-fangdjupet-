@@ -95,4 +95,30 @@ class EnemyFactoryTest {
         assertInstanceOf(UnsupportedOperationException.class, exception.getCause());
         assertEquals("Utility class cannot be instantiated", exception.getCause().getMessage());
     }
+
+    @Test
+    @DisplayName("createEnemy with EnemyType creates the right enemy with scaled stats")
+    void testCreateEnemyByType() {
+        Enemy skeleton = EnemyFactory.createEnemy(EnemyType.SKELETON, 2);
+
+        assertEquals("Skeleton", skeleton.getName());
+        assertEquals(62.5, skeleton.getMaxHealth(), 0.001);
+        assertInstanceOf(RangedAttack.class, skeleton.getAttackStrategy());
+    }
+
+    @Test
+    @DisplayName("Every EnemyType can be created")
+    void testEveryEnemyTypeCanBeCreated() {
+        for (EnemyType type : EnemyType.values()) {
+            assertNotNull(EnemyFactory.createEnemy(type, 1));
+        }
+    }
+
+    @Test
+    @DisplayName("Invalid level or null type throws exception")
+    void testInvalidArguments() {
+        assertThrows(IllegalArgumentException.class, () -> EnemyFactory.createGoblin(0));
+        assertThrows(NullPointerException.class, () -> EnemyFactory.createEnemy(null, 1));
+    }
+
 }
