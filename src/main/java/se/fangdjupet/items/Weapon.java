@@ -1,5 +1,6 @@
 package se.fangdjupet.items;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -43,6 +44,7 @@ public class Weapon extends Item {
 
     @Override
     public String getDescription() {
-        return "Weapon (" + weaponType.name() + "): " + getName() + " (Level " + getLevel() + ") - Damage: " + getTotalDamage();
+        return "Weapon (" + weaponType.name() + "): " + getName() + " (Level " + getLevel() + ") - Damage: " + String.format(Locale.ROOT, "%.1f", getTotalDamage());
+
     }
 }
