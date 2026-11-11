@@ -4,10 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.fangdjupet.combat.Enemy;
 import se.fangdjupet.combat.Hero;
+import se.fangdjupet.combat.MagicAttack;
+import se.fangdjupet.combat.MeleeAttack;
+import se.fangdjupet.combat.RangedAttack;
 import se.fangdjupet.items.*;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -169,5 +174,28 @@ class GameStateTest {
         assertThrows(NullPointerException.class, () -> new GameState(null, inventory, dungeon));
         assertThrows(NullPointerException.class, () -> new GameState(hero, null, dungeon));
         assertThrows(NullPointerException.class, () -> new GameState(hero, inventory, null));
+    }
+
+    @Test
+    void attackStrategyFollowsEquippedWeapon() {
+        Weapon bow = new Weapon("Bow", 1, WeaponType.BOW);
+        Weapon staff = new Weapon("Staff", 1, WeaponType.STAFF);
+        inventory.addItem(bow);
+        inventory.addItem(staff);
+
+        assertInstanceOf(MeleeAttack.class, state.getAttackStrategy());
+
+        state.equip(bow);
+        assertInstanceOf(RangedAttack.class, state.getAttackStrategy());
+
+        state.equip(staff);
+        assertInstanceOf(MagicAttack.class, state.getAttackStrategy());
+    }
+
+    @Test
+    void everyWeaponTypeHasAttackStrategy() {
+        for (WeaponType type : WeaponType.values()) {
+            assertNotNull(GameState.strategyFor(type));
+        }
     }
 }
