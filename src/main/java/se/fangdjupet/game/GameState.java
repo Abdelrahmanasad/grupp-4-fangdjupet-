@@ -8,6 +8,12 @@ import se.fangdjupet.items.Item;
 import se.fangdjupet.items.Potion;
 import se.fangdjupet.items.Weapon;
 
+import se.fangdjupet.combat.AttackStrategy;
+import se.fangdjupet.combat.MagicAttack;
+import se.fangdjupet.combat.MeleeAttack;
+import se.fangdjupet.combat.RangedAttack;
+import se.fangdjupet.items.WeaponType;
+
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -99,6 +105,30 @@ public class GameState {
      */
     public double getAttackDamage() {
         return BASE_ATTACK_DAMAGE + getEquippedWeapon().map(Weapon::getTotalDamage).orElse(0.0);
+    }
+
+    /**
+     * The attack style comes from the equipped weapon (Strategy pattern):
+     * swords, axes and daggers hit in melee, bows shoot (ranged) and staffs cast magic.
+     *
+     * @return the attack strategy to use, melee when the hero has no weapon
+     */
+    public AttackStrategy getAttackStrategy() {
+        return getEquippedWeapon()
+                .map(weapon -> strategyFor(weapon.getWeaponType()))
+                .orElseGet(MeleeAttack::new);
+    }
+
+    /**
+     * @param type the weapon type
+     * @return the attack strategy that belongs to the weapon type
+     */
+    static AttackStrategy strategyFor(WeaponType type) {
+        return switch (type) {
+            case SWORD, AXE, DAGGER -> new MeleeAttack();
+            case BOW -> new RangedAttack();
+            case STAFF -> new MagicAttack();
+        };
     }
 
     /**
