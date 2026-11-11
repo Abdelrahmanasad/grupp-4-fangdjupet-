@@ -1,5 +1,6 @@
 package se.fangdjupet.items;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -44,6 +45,7 @@ public class Armor extends Item {
 
     @Override
     public String getDescription() {
-        return "Armor (" + armorSlot.name() + "): " + getName() + " (Level " + getLevel() + ") - Defence: +" + getTotalDefence();
+        return "Armor (" + armorSlot.name() + "): " + getName() + " (Level " + getLevel() + ") - Defence: +" + String.format(Locale.ROOT, "%.1f", getTotalDefence());
+
     }
 }

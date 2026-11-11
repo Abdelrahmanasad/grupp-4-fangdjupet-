@@ -1,8 +1,14 @@
-//Föremål och inventarium (Generics, Collections) - Ansvarig Abbe
-
-//Weapon, Armor, Potion - record
-// Item - som dealed interface (Men det är bara rekommendation)
-//Rarity, ItemType - enum
-//ItemValidation - final class
-//Inventory - Generisk klass (class <T extends Item>)
-//
+/**
+ * Items and inventory (Collections and Generics).
+ * <p>
+ * Owner: Abbe.
+ * <ul>
+ *     <li>{@link se.fangdjupet.items.Item} - abstract base class for all items</li>
+ *     <li>{@link se.fangdjupet.items.Weapon}, {@link se.fangdjupet.items.Armor},
+ *         {@link se.fangdjupet.items.Potion} - the three kinds of items</li>
+ *     <li>{@link se.fangdjupet.items.ItemType}, {@link se.fangdjupet.items.WeaponType},
+ *         {@link se.fangdjupet.items.ArmorSlot} - enums with item categories and base stats</li>
+ *     <li>{@link se.fangdjupet.items.Inventory} - the hero's inventory with a maximum capacity</li>
+ * </ul>
+ */
+package se.fangdjupet.items;
